@@ -11,17 +11,17 @@ LOG_DIR="/var/log/rotate.log"
 
 #バックアップフォルダがあるかの確認
 if [ ! -e ${BACKUPDIR} ]; then
-	echo "${BACKUPDIR}フォルダは存在しません。終了します"
-	exit 1
+    echo "${BACKUPDIR}フォルダは存在しません。終了します"
+    exit 1
 fi
 
 #書き込みチェック
 touch ${BACKUPDIR}test.sql
 if [ $? -eq "1" ]; then
-	echo "書き込めませんでした。終了します。"
-	exit 1
+    echo "書き込めませんでした。終了します。"
+    exit 1
 else
-	sudo rm -f ${BACKUPDIR}test.sql
+    sudo rm -f ${BACKUPDIR}test.sql
 fi
 cd ${BACKUPDIR}
 
