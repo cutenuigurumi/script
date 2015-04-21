@@ -6,8 +6,17 @@ EXPIRATIONDATE=`date "-d${TIME_LIMIT} days ago" '+%Y%m%d%H'`
 USER="root"
 PASSWORD="ned5725"
 DATABASE="symfony"
-FILENAME="BACKUPDIR""${CURRENTTIME}"".sql"
+FILENAME=${CURRENTTIME}".sql"
 LOG_DIR="/var/log/rotate.log"
+
+#戻り値のチェック
+is_check_return_value(){
+if [ $? = 1 ]; then
+	echo "書き込めませんでした。終了します"
+	exit 1;
+fi
+	return 0;
+}
 
 #バックアップフォルダがあるかの確認
 if [ ! -e ${BACKUPDIR} ]; then
@@ -15,21 +24,13 @@ if [ ! -e ${BACKUPDIR} ]; then
     exit 1
 fi
 
-#書き込みチェック
-if [ -w ${BACKUPDIR} ]; then
-    echo "書き込めませんでした。終了します。"
-    exit 1
-fi
+cd ${BACKUPDIR}
+is_check_return_value;
 
 #バックアップファイルの作成
 mysqldump -u ${USER} -p${PASSWORD} ${DATABASE} > ${FILENAME}
-#戻り値のチェック
-if [$? = 1]; then
-	echo "書き込めませんでした。終了します。" 
-	exit 1
-fi
+is_check_return_value;
 
-cd ${BACKUPDIR}
 #圧縮
 tar zcvf  ${CURRENTTIME}.tar.gz ${FILENAME}
 #圧縮前のバックアップファイル元の削除
