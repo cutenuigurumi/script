@@ -12,8 +12,8 @@ LOG_DIR="/var/log/rotate.log"
 #戻り値のチェック
 is_check_return_value(){
 if [ $? = 1 ]; then
-	echo "書き込めませんでした。終了します"
-	exit 1;
+    echo "書き込めませんでした。終了します"
+    exit 1;
 fi
 	return 0;
 }
