@@ -33,7 +33,7 @@ sudo rm -f ${FILENAME}
 for BACKUP_FILE in `find ${BACKUPDIR} -name "*.tar.gz"`;do
     #一時ファイルとファイルのリストを比較
     if [[  ${BACKUP_FILE} -ot ${BACKUPDIR}tmp.txt ]]; then
-    sudo rm -f ${BACKUP_FILE}
+        sudo rm -f ${BACKUP_FILE}
         echo "delete"${BACKUP_FILE}
     fi
 done
