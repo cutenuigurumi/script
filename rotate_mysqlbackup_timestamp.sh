@@ -6,7 +6,8 @@ EXPIRATIONDATE=`date "-d${TIME_LIMIT} days ago" '+%Y/%m/%d %H:%M:%S'`
 USER="root"
 PASSWORD="ned5725"
 DATABASE="symfony"
-FILENAME="${CURRENTTIME}"".sql"
+PREFIX="ebachannel_"
+FILENAME="${PREFIX}${CURRENTTIME}.sql"
 
 #戻り値のチェック
 is_check_return_value(){
@@ -27,12 +28,13 @@ fi
 cd ${BACKUPDIR}
 is_check_return_value;
 
+echo "${FILENAME}"
 #バックアップファイルの作成
 mysqldump -u ${USER} -p${PASSWORD} ${DATABASE} > ${FILENAME}
 is_check_return_value;
 
 #圧縮
-tar zcvf  ${CURRENTTIME}.tar.gz ${FILENAME}
+tar zcvf  ${PREFIX}${CURRENTTIME}.tar.gz ${FILENAME}
 is_check_return_value;
 
 #圧縮前のバックアップファイル元の削除
@@ -41,7 +43,6 @@ sudo rm -f ${FILENAME}
 #保存期間を過ぎたバックアップファイルの削除
 for BACKUP_FILE in `find ${BACKUPDIR} -mtime +${TIME_LIMIT} -name "*.tar.gz"`;do
     #一時ファイルとファイルのリストを比較
-#    sudo rm -f ${BACKUP_FILE}
-    echo "delete"${BACKUP_FILE}
+    sudo rm -f ${BACKUP_FILE}
 done
 
