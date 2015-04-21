@@ -15,7 +15,7 @@ is_check_return_value(){
         echo "書き込めませんでした。終了します"
         exit 1;
     fi
-        return 0;
+    return 0;
 }
 
 #ディレクトリチェック
