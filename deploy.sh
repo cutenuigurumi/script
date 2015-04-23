@@ -1,7 +1,7 @@
 #!/bin/sh
-GITDIR="/workspace/symfony""${SOURCEDIR}"
 PRODUCTDIR="/www/symfony"
 SOURCEDIR="/src"
+GITDIR="/workspace/symfony""${SOURCEDIR}"
 
 is_check_dir_exist(){
     #書き込み先、書き込みもとのフォルダがあるかを確認
@@ -20,12 +20,12 @@ is_check_return_value(){
 }
 echo ${GITDIR};
 #ディレクトリチェック
-is_check_dir_exist ${GITDIR};
-is_check_dir_exist ${PRODUCTDIR}${SOURCEDIR};
+is_check_dir_exist ${GITDIR}
+is_check_dir_exist ${PRODUCTDIR}${SOURCEDIR}
 
 #コピーもとのフォルダに移動できるか
 cd ${GITDIR}
-is_check_return_value;
+is_check_return_value
 
 #pull
 git pull origin master
