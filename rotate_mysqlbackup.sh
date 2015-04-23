@@ -41,12 +41,16 @@ sudo rm -f ${FILENAME}
 
 #保存期間を過ぎたバックアップファイルの削除
 for BACKUP_FILE in `find ${BACKUPDIR} -name "*.tar.gz"`;do
-    BACKUP_DATE=`cut -c 9-18 ${BACKUP_FILE}`
+    BACKUP_DATE=`echo ${BACKUP_FILE} | sed "s/\/backup\/ebachannel_//g" |  sed "s/.tar.gz//g" | sed "s/\([0-9]{10}\)//g"`
+
+	echo ${BACKUP_DATE}
     #入力チェック
     if [[ ! ${BACKUP_DATE} =~ [0-9]{10} ]]; then
         continue;
     fi
+    echo "if [ ${BACKUP_DATE} -le ${EXPIRATIONDATE} ]; then"
     if [ ${BACKUP_DATE} -le ${EXPIRATIONDATE} ]; then
+		delete ${BACKUP_DATE}
         sudo rm -f ${BACKUP_FILE}
     fi
 done
