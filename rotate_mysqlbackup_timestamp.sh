@@ -8,6 +8,7 @@ PASSWORD="ned5725"
 DATABASE="symfony"
 PREFIX="ebachannel_"
 FILENAME="${PREFIX}${CURRENTTIME}.sql"
+LOGFILE="/var/log/rotate_mysqldump.log"
 
 #戻り値のチェック
 is_check_return_value(){
@@ -26,16 +27,16 @@ fi
 
 #書き込み,日付チェックのため一時ファイルを作成
 cd ${BACKUPDIR}
-is_check_return_value;
+is_check_return_value
 
 echo "${FILENAME}"
 #バックアップファイルの作成
 mysqldump -u ${USER} -p${PASSWORD} ${DATABASE} > ${FILENAME}
-is_check_return_value;
+is_check_return_value
 
 #圧縮
 tar zcvf  ${PREFIX}${CURRENTTIME}.tar.gz ${FILENAME}
-is_check_return_value;
+is_check_return_value
 
 #圧縮前のバックアップファイル元の削除
 sudo rm -f ${FILENAME}
