@@ -49,5 +49,4 @@ PREFIX="ebachannel_"
             sudo rm -f ${BACKUP_FILE}
         fi
     done
-#標準エラー出力をログファイルに出力する
 } >> "${LOGFILE}" 2>&1
