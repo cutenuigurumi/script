@@ -1,24 +1,29 @@
 #!/bin/sh
-PRODUCTDIR="/www/symfony"
+#PRODUCTDIR="/www/symfony"
+PRODUCTDIR="/www/test"
 SOURCEDIR="/src"
-GITDIR="/workspace/symfony""${SOURCEDIR}"
+#GITDIR="/workspace/symfony""${SOURCEDIR}"
+GITDIR="/workspace/test"
+LOGFILE="/tmp/deploy.log"
 
 is_check_dir_exist(){
     #書き込み先、書き込みもとのフォルダがあるかを確認
     if [ ! -e $1 ]; then
-        echo "$1フォルダは存在しません。終了します"
-        exit 1
+        echo "this folder is not exists"
+        sudo mkdir -p ${1}
+        sudo chown ebara:netmarketing  ${1}
+        sudo chmod 775  ${1}
+        echo 1
     fi
 }
 #戻り値チェック
 is_check_return_value(){
     if [[ $1 = 1 ]]; then
-        echo "書き込めませんでした。終了します"
+        echo "失敗しました。終了します"
         exit 1;
     fi
     return 0;
 }
-echo ${GITDIR};
 #ディレクトリチェック
 is_check_dir_exist ${GITDIR}
 is_check_dir_exist ${PRODUCTDIR}${SOURCEDIR}
@@ -27,22 +32,15 @@ is_check_dir_exist ${PRODUCTDIR}${SOURCEDIR}
 cd ${GITDIR}
 is_check_return_value $?
 
-#pull
-git pull origin master
+#最新をgithubから落としてくる
+git fetch
+git merge
+
 #エラー時の処理
 is_check_return_value $?
-#コピー
-echo "sudo cp -R ${GITDIR} ${PRODUCTDIR}"
-sudo cp -R ${GITDIR} ${PRODUCTDIR}
+
+#ワークスペースから本番へコピーする
+sudo rsync --exclude=".git" -ar ${GITDIR}/ ${PRODUCTDIR} 
+#sudo cp -R ${GITDIR} ${PRODUCTDIR}
 is_check_return_value $?
 
-/usr/sbin/sendmail -t << EOF
-From: root@${HOSTNAME}
-Subject: ${SUBJECT}
-To: chihiro.ebara@net-marketing.co.jp
-
-Finished deploy
-
-EOF
-
-exit 1;

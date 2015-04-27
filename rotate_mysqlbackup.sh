@@ -40,6 +40,10 @@ fi
 cd ${BACKUPDIR}
 is_check_return_value
 	
+
+cd ${BACKUPDIR}
+is_check_return_value
+
 #バックアップファイルの作成
 mysqldump -u ${USER} -p${PASSWORD} ${DATABASE} > ${FILENAME}
 is_check_return_value
