@@ -1,9 +1,9 @@
 #!/bin/sh
-#PRODUCTDIR="/www/symfony"
-PRODUCTDIR="/www/test"
+PRODUCTDIR="/www/symfony"
+#PRODUCTDIR="/www/test"
 SOURCEDIR="/src"
-#GITDIR="/workspace/symfony""${SOURCEDIR}"
-GITDIR="/workspace/test"
+GITDIR="/workspace/symfony"
+#GITDIR="/workspace/test"
 LOGFILE="/tmp/deploy.log"
 
 #以下chatwork api連携
@@ -47,18 +47,18 @@ is_check_return_value $?
 
 #最新をgithubから落としてくる
 git fetch
-git merge
+#エラー時の処理
+is_check_return_value $?
+git merge origin/master
 
 #エラー時の処理
 is_check_return_value $?
 
 #ワークスペースから本番へコピーする
 sudo rsync --exclude=".git" -ar ${GITDIR}/ ${PRODUCTDIR} 
-#sudo cp -R ${GITDIR} ${PRODUCTDIR}
 is_check_return_value $?
 
 LOG_DETAIL=`cat ${LOGFILE}`
-echo "** `date '+%Y-%m-%d %H:%M:%S'` - END"
 
 
 #chatworkに結果を連携
