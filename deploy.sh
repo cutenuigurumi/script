@@ -1,8 +1,8 @@
 #!/bin/sh
-PRODUCTDIR="/www/symfony"
+PRODUCTDIR="/www/symfony${SOURCEDIR}"
 #PRODUCTDIR="/www/test"
 SOURCEDIR="/src"
-GITDIR="/workspace/symfony"
+GITDIR="/workspace/symfony${SOURCEDIR}"
 #GITDIR="/workspace/test"
 LOGFILE="/tmp/deploy.log"
 
@@ -55,7 +55,7 @@ git merge origin/master
 is_check_return_value $?
 
 #ワークスペースから本番へコピーする
-sudo rsync --exclude=".git" -ar ${GITDIR}/ ${PRODUCTDIR} 
+sudo rsync --exclude=".git" -ar ${GITDIR}/ ${PRODUCTDIR}${SOURCEDIR} 
 is_check_return_value $?
 
 LOG_DETAIL=`cat ${LOGFILE}`
