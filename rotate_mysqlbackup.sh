@@ -14,7 +14,8 @@ exec >> ${LOGFILE} 2>&1
 echo "** `date '+%Y-%m-%d %H:%M:%S'` - START"
 echo "** Create  mysqldump backup and rotate backup script**"
 
-# token by bot
+#以下chatwork api連携
+# nm-botのtoken
 TOKEN="ca89fefe62f2d5cd17da1e346a9961b3"
 # Room ID ブラウザの#!rid... ...の部分
 # ブランチ切り替えグループ
@@ -63,6 +64,7 @@ for BACKUP_FILE in `find ${BACKUPDIR} -name "*.tar.gz"`;do
         continue
     fi
     if [ ${BACKUP_DATE} -le ${EXPIRATIONDATE} ]; then
+        echo "delete ${BACKUP_FILE}"
         sudo rm -f ${BACKUP_FILE}
     fi
 done
