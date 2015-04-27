@@ -1,16 +1,16 @@
 #!/bin/sh
 PRODUCTDIR="/www/symfony${SOURCEDIR}"
-#PRODUCTDIR="/www/test"
 SOURCEDIR="/src"
 GITDIR="/workspace/symfony${SOURCEDIR}"
-#GITDIR="/workspace/test"
 LOGFILE="/tmp/deploy.log"
+#debug用ディレクトリ
+#PRODUCTDIR="/www/test"
+#GITDIR="/workspace/test"
 
 #以下chatwork api連携
 # nm-botのtoken
 TOKEN="ca89fefe62f2d5cd17da1e346a9961b3"
 # Room ID ブラウザの#!rid... ...の部分
-# ブランチ切り替えグループ
 ROOM="28508316"
 # API
 API_URL="https://api.chatwork.com/v1/rooms/$ROOM/messages"
@@ -22,8 +22,9 @@ echo "** deploy script report**"
 is_check_dir_exist(){
     #書き込み先、書き込みもとのフォルダがあるかを確認
     if [ ! -e $1 ]; then
-        echo "this folder is not exists"
+        echo "this directory is not exists"
         sudo mkdir -p ${1}
+        echo "Create ${1}"
         sudo chown ebara:netmarketing  ${1}
         sudo chmod 775  ${1}
         echo 1
@@ -39,7 +40,7 @@ is_check_return_value(){
 }
 #ディレクトリチェック
 is_check_dir_exist ${GITDIR}
-is_check_dir_exist ${PRODUCTDIR}${SOURCEDIR}
+is_check_dir_exist ${PRODUCTDIR}
 
 #コピーもとのフォルダに移動できるか
 cd ${GITDIR}
