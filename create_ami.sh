@@ -30,7 +30,6 @@ return 0
 RETURN=`aws ec2 create-image  --instance-id ${INSTANCE_ID} --name "${PREFIX}${CURRENTTIME}" --no-reboot`
 is_check_return_value
 
-
 echo "** `date '+%Y-%m-%d %H:%M:%S'` - END"
 
 LOG_DETAIL=`cat ${LOGFILE}`
