@@ -20,20 +20,18 @@ API_URL="https://api.chatwork.com/v1/rooms/$ROOM/messages"
 is_check_return_value(){
    if [ $? = 1 ]; then
         echo "** `date '+%Y-%m-%d %H:%M:%S'` - START"
-        echo "** Create ami backup and rotate backup**"
         echo "書き込めませんでした。終了します"
         exit 1
    fi
 return 0
 }
 
-RETURN=`aws ec2 create-image  --instance-id ${INSTANCE_ID} --name "${PREFIX}${CURRENTTIME}" --no-reboot`
+aws ec2 create-image  --instance-id ${INSTANCE_ID} --name "${PREFIX}${CURRENTTIME}" --no-reboot
 is_check_return_value
 
-echo "** `date '+%Y-%m-%d %H:%M:%S'` - END"
-
+aws ec2 deregister-image --image-id {ami-id}
 LOG_DETAIL=`cat ${LOGFILE}`
 
 #chatworkに結果を連携
 RESULT=`curl -X POST -H "X-ChatWorkToken: $TOKEN" -d "body=${LOG_DETAIL}" $API_URL`
-cat /dev/null > ${LOGFILE}
+#cat /dev/null > ${LOGFILE}

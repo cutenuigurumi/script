@@ -3,12 +3,12 @@ BACKUPDIR="/backup/"
 CURRENTTIME=`date '+%Y%m%d%H%M'`
 TIME_LIMIT=2
 EXPIRATIONDATE=`date "-d${TIME_LIMIT} days ago" '+%Y%m%d%H'`
-USER="root"
-PASSWORD="ned5725"
-DATABASE="symfony"
 FILENAME="${PREFIX}${CURRENTTIME}.sql"
 LOGFILE="/tmp/rotate.log"
 PREFIX="/backup/ebachannel_"
+
+#設定ファイル読み出し
+. ./setting.sh
 
 exec >> ${LOGFILE} 2>&1
 echo "** `date '+%Y-%m-%d %H:%M:%S'` - START"
