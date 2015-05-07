@@ -55,6 +55,7 @@ git merge origin/master
 is_check_return_value $?
 
 #ワークスペースから本番へコピーする
+echo "デプロイ開始します"
 sudo rsync --exclude=".git" -ar ${GITDIR}/ ${PRODUCTDIR}${SOURCEDIR} 
 is_check_return_value $?
 

@@ -33,18 +33,19 @@ if [ ! -e ${BACKUPDIR} ]; then
     exit 1
 fi
 	
-echo "${BACKUPDIR}に移動"
 cd ${BACKUPDIR}
 is_check_return_value
 	
 
 #バックアップファイルの作成
-mysqldump -u ${DB_USER} -p${PASSWORD} ${DATABASE} > ${FILENAME}
+mysqldump --defaults-group-suffix=_host1 ${DATABASE} > ${FILENAME}
 is_check_return_value
 
 #圧縮
+echo "圧縮開始"
 tar zcvf  ${PREFIX}${CURRENTTIME}.tar.gz ${FILENAME}
 is_check_return_value
+
 #圧縮前のバックアップファイル元の削除
 sudo rm -f ${FILENAME}
 #保存期間を過ぎたバックアップファイルの削除
@@ -66,6 +67,6 @@ echo "** `date '+%Y-%m-%d %H:%M:%S'` - END"
 LOG_DETAIL=`cat ${LOGFILE}`
 
 #chatworkに結果を連携
-RESULT=`curl -X POST -H "X-ChatWorkToken: $TOKEN" -d "body=${LOG_DETAIL}" $API_URL`
-cat /dev/null > ${LOGFILE}
+#RESULT=`curl -X POST -H "X-ChatWorkToken: $TOKEN" -d "body=${LOG_DETAIL}" $API_URL`
+#cat /dev/null > ${LOGFILE}
 
