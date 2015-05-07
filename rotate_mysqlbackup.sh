@@ -7,6 +7,7 @@ FILENAME="${PREFIX}${CURRENTTIME}.sql"
 LOGFILE="/tmp/rotate.log"
 PREFIX="/backup/ebachannel_"
 
+cd /usr/local/aws/bin/
 #設定ファイル読み出し
 . ./setting.sh
 
@@ -14,12 +15,6 @@ exec >> ${LOGFILE} 2>&1
 echo "** `date '+%Y-%m-%d %H:%M:%S'` - START"
 echo "** Create  mysqldump backup and rotate backup script**"
 
-#以下chatwork api連携
-# nm-botのtoken
-TOKEN="ca89fefe62f2d5cd17da1e346a9961b3"
-# Room ID ブラウザの#!rid... ...の部分
-# ブランチ切り替えグループ
-ROOM="28508316"
 # API
 API_URL="https://api.chatwork.com/v1/rooms/$ROOM/messages"
 
@@ -38,15 +33,13 @@ if [ ! -e ${BACKUPDIR} ]; then
     exit 1
 fi
 	
+echo "${BACKUPDIR}に移動"
 cd ${BACKUPDIR}
 is_check_return_value
 	
 
-cd ${BACKUPDIR}
-is_check_return_value
-
 #バックアップファイルの作成
-mysqldump -u ${USER} -p${PASSWORD} ${DATABASE} > ${FILENAME}
+mysqldump -u ${DB_USER} -p${PASSWORD} ${DATABASE} > ${FILENAME}
 is_check_return_value
 
 #圧縮
