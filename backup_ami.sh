@@ -40,6 +40,8 @@ else
     is_check_return_value
     echo "delete ami ${AMI_ID}"
 fi
+LOG_DETAIL=`cat ${LOGFILE}`
+
 
 #chatworkに結果を連携
 RESULT=`curl -X POST -H "X-ChatWorkToken: $TOKEN" -d "body=${LOG_DETAIL}" $API_URL`
