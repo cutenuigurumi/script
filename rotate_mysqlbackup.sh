@@ -9,9 +9,8 @@ BODY_LOGFILE="/tmp/body.log"
 END_LOGFILE="/tmp/end.log"
 PREFIX="/backup/ebachannel_"
 
-cd /usr/local/aws/bin/ >> ${BODY_LOGFILE} 2>&1
 #設定ファイル読み出し
-. ./setting.sh
+. /usr/local/aws/bin/setting.sh
 # API
 REGULAR_API_URL="https://api.chatwork.com/v1/rooms/${REGULAR_ROOM}/messages"
 ERROR_API_URL="https://api.chatwork.com/v1/rooms/${ERROR_ROOM}/messages"

@@ -5,14 +5,13 @@ EXPIRATIONDATE=`date "-d${TIME_LIMIT} days ago" '+%Y%m%d%H%M'`
 HEAD_LOGFILE="/tmp/head_create_ami.log"
 BODY_LOGFILE="/tmp/body_create_ami.log"
 END_LOGFILE="/tmp/end_create_ami.log"
-PREFIX="/backup/ebachannel_"
 
-cd /usr/local/aws/bin/ > ${BODY_LOGFILE} 2>&1
 #設定ファイル読み出し
-. ./setting.sh
+. /usr/local/aws/bin/setting.sh
+
 
 #ログのヘッダ部分作成
-echo "create ami backup and delete old ami" >> ${HEAD_LOGFILE} 2>&1
+echo "** create ami backup and delete old ami" >> ${HEAD_LOGFILE} 2>&1
 echo "** `date '+%Y-%m-%d %H:%M:%S'` - START"  >> ${HEAD_LOGFILE} 2>&1
 
 # API
@@ -38,12 +37,11 @@ delete_logfile(){
 }
 
 #amiを作成
-echo "amiを作成" >> ${BODY_LOGFILE} 2>&1
-aws ec2 create-image  --instance-id ${INSTANCE_ID} --name "${PREFIX}${CURRENTTIME}" --no-reboot >> ${BODY_LOGFILE} 2>&1
+AMI_ID=`aws ec2 create-image  --instance-id ${INSTANCE_ID} --name "${PREFIX}${CURRENTTIME}" --no-reboot | jq -r '.ImageId'`>> ${BODY_LOGFILE} >&2
+echo "create AMI->${PREFIX}${CURRENTTIME}/${AMI_ID}" >> ${BODY_LOGFILE} 2>&1
 
 #amiの一覧を取得
 AMI_ID=`aws ec2 describe-images --owners self --filters "Name=name,Values=${PREFIX}${EXPIRATIONDATE}" | jq '.Images[]' | jq -r '.ImageId'`
-echo ${AMI_ID}
 if [ -z ${AMI_ID} ]; then
     echo "削除するものはありませんでした。" >> ${BODY_LOGFILE} 2>&1
 else
