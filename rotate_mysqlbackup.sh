@@ -8,15 +8,12 @@ HEAD_LOGFILE="/tmp/head.log"
 BODY_LOGFILE="/tmp/body.log"
 END_LOGFILE="/tmp/end.log"
 PREFIX="/backup/ebachannel_"
-
 #設定ファイル読み出し
 . /usr/local/aws/bin/setting.sh
+
 # API
 REGULAR_API_URL="https://api.chatwork.com/v1/rooms/${REGULAR_ROOM}/messages"
 ERROR_API_URL="https://api.chatwork.com/v1/rooms/${ERROR_ROOM}/messages"
-
-echo -e "** `date '+%Y-%m-%d %H:%M:%S'` - START
-** Create  mysqldump backup and rotate backup script**" >>  ${HEAD_LOGFILE} 2>&1
 
 #戻り値のチェック
 is_check_return_value(){
@@ -36,6 +33,11 @@ delete_logfile(){
     cat /dev/null > ${BODY_LOGFILE}
     cat /dev/null > ${END_LOGFILE}
 }
+
+#ヘッダ部作成
+echo -e "** `date '+%Y-%m-%d %H:%M:%S'` - START
+** Create  mysqldump backup and rotate backup script**" >>  ${HEAD_LOGFILE} 2>&1
+
 #バックアップフォルダがあるかの確認
 if [ ! -e ${BACKUPDIR} ]; then
     echo "${BACKUPDIR}フォルダは存在しません。終了します\n
